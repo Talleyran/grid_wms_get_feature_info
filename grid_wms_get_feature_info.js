@@ -76,19 +76,25 @@ gxp.plugins.GridWmsFeatureInfo = Ext.extend(gxp.plugins.WMSGetFeatureInfo, {
 						toggleGroup: this.toggleGroup,
 						enableToggle: true,
 						allowDepress: true,
-                        scope:this,
-						
+            scope:this,
+
+
+
+
 						toggleHandler: function(button, pressed) {
-                            var isPassed = true
-                            for (var i = 0, len = info.controls.length; i < len; i++){
-                                if (pressed) {
-                                    isPassed &= info.controls[i].activate();
-                                } else {
-                                    isPassed &= info.controls[i].deactivate();
-                                }
-                            }
-                            if(isPassed) if (pressed) { this.activate() } else { this.deactivate() }
+              for (var i = 0, len = info.controls.length; i < len; i++){
+                  if (pressed) {
+                     info.controls[i].activate() 
+                  } else {
+                     info.controls[i].deactivate() 
+                  }
+              }
+              if (pressed) { this.activate() } else { this.deactivate() }
 						}
+
+
+
+
 					}]);
 					var infoButton = this.actions[0].items[0];
 
@@ -185,8 +191,8 @@ gxp.plugins.GridWmsFeatureInfo = Ext.extend(gxp.plugins.WMSGetFeatureInfo, {
                                     layerNames[i] = dataArray[i][2];
                                     fieldNames[i] = dataArray[i][0];
                                 }
-                                var translatedLayerNames = this.target.translateSymbols("layer", layerNames);
-                                var metadataFieldNames = this.target.getMetaData("field", fieldNames);
+                                var translatedLayerNames = Gispro.Utils.translateSymbols("layer", layerNames);
+                                var metadataFieldNames = Gispro.Utils.getMetaData("field", fieldNames);
                                 // transform two last columns to one for grouping
                                 
                                 for(i=0;i<dataArray.length;i++){
