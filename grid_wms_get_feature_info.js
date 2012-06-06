@@ -65,10 +65,41 @@ gxp.plugins.GridWmsFeatureInfo = Ext.extend(gxp.plugins.WMSGetFeatureInfo, {
      *  added to the GetFeatureInfo request (e.g. ["CQL_FILTER"]).
      */
 
+    addPointerToMap: function(){
+      var el = this.target.mapPanel.map.div
+      var classes = el.getAttribute('class').split(' ')
+      classes.push('helpPointer')
+      el.setAttribute('class',classes.join(' '))
+    },
+
+    removePointerFromMap: function(){
+      var el = this.target.mapPanel.map.div
+      var classes = el.getAttribute('class').split(' ')
+      var index = classes.indexOf('helpPointer')
+      classes.splice(index,1)
+      el.setAttribute('class',classes.join(' '))
+    },
+
+    rssTooltipOn: function(){
+      //remove nasty global var
+      rssVar.show = 1
+    },
+
+    rssTooltipOff: function(){
+      //remove nasty global var
+      rssVar.show = 0
+    },
+
     /** api: method[addActions]
      */
     addActions: function() {
 					this.popupCache = {};
+
+          this.on('activate', this.addPointerToMap, this)
+          this.on('deactivate', this.removePointerFromMap, this)
+
+          this.on('activate', this.rssTooltipOn, this)
+          this.on('deactivate', this.rssTooltipOff, this)
         
 					var actions = gxp.plugins.Tool.prototype.addActions.call(this, [{
 						tooltip: this.infoActionTip,
@@ -177,7 +208,7 @@ gxp.plugins.GridWmsFeatureInfo = Ext.extend(gxp.plugins.WMSGetFeatureInfo, {
 														if(superGroup!="")
 															needPlusick = true;
 													}
-													superGroup = supGrTry[1] ;
+													superGroup = supGrTry[1];
 												}
 											}
 										}
